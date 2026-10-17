@@ -220,6 +220,99 @@ namespace SistemaEstoque.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SistemaEstoque.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categorias");
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.MovimentacoesEstoque", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MovimentacoesEstoqueId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProdutoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Usuario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovimentacoesEstoqueId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("MovimentacoesEstoque");
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.Produto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Preco")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.ToTable("Produtos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -269,6 +362,40 @@ namespace SistemaEstoque.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.MovimentacoesEstoque", b =>
+                {
+                    b.HasOne("SistemaEstoque.Models.MovimentacoesEstoque", null)
+                        .WithMany("Movimentacoes")
+                        .HasForeignKey("MovimentacoesEstoqueId");
+
+                    b.HasOne("SistemaEstoque.Models.Produto", "Produto")
+                        .WithMany("Movimentacoes")
+                        .HasForeignKey("ProdutoId");
+
+                    b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.Produto", b =>
+                {
+                    b.HasOne("SistemaEstoque.Models.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.MovimentacoesEstoque", b =>
+                {
+                    b.Navigation("Movimentacoes");
+                });
+
+            modelBuilder.Entity("SistemaEstoque.Models.Produto", b =>
+                {
+                    b.Navigation("Movimentacoes");
                 });
 #pragma warning restore 612, 618
         }
