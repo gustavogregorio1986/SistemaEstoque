@@ -43,5 +43,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    await IdentitySeeder.CriarRolesEUsuariosAdminAs(serviceProvider);
+}
 
-app.Run();
+    app.Run();
