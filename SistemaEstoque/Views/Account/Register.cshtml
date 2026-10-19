@@ -1,0 +1,57 @@
+﻿@using SistemaEstoque.DTO
+@model RegisterUserDto
+
+@{
+    ViewData["Title"] = "Cadastrar Usuário";
+}
+
+<h2>Cadastro de Usuário</h2>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<!-- Exibe erros gerais do Identity ou de validação -->
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+<form method="post" asp-action="Register">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Senha">Senha</label>
+        <input type="password" class="form-control" id="Senha" asp-for="Senha" />
+        <span asp-validation-for="Senha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ConfirmarSenha">Confirmar Senha</label>
+        <!-- Corrigido para asp-for="ConfirmarSenha" para bater perfeitamente com o DTO -->
+        <input type="password" class="form-control" id="ConfirmarSenha" asp-for="ConfirmarSenha" />
+        <span asp-validation-for="ConfirmarSenha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Perfil">Perfil</label>
+        <select class="form-control" id="Perfil" asp-for="Perfil">
+            <option value="Admin">Admin</option>
+            <option value="Estoquista">Estoquista</option>
+        </select>
+        <span asp-validation-for="Perfil" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Cadastrar</button>
+</form>
