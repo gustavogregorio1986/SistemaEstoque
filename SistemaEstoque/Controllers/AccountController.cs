@@ -83,5 +83,11 @@ namespace SistemaEstoque.Controllers
             TempData["MensagemErro"] = $"Ocorreu um erro no processo.";
             return View(loginDto);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
     }
 }
