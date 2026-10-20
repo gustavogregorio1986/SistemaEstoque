@@ -1,0 +1,37 @@
+﻿@using SistemaEstoque.DTO
+@model LoginUserDto
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container" style="max-width: 400px; margin-top: 50px;">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <form asp-action="Login" method="post">
+        <!-- Resumo de erros gerais (caso o e-mail ou senha estejam inválidos no backend) -->
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">E-mail</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="Digite seu e-mail" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Senha" class="form-label">Senha</label>
+            <input asp-for="Senha" type="password" class="form-control" placeholder="Digite sua senha" />
+            <span asp-validation-for="Senha" class="text-danger"></span>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

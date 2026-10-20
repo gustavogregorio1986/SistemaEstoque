@@ -62,5 +62,7 @@ namespace SistemaEstoque.Controllers
 
             return View(registerDto);
         }
+
+        public IActionResult Login() => View();
     }
 }
