@@ -18,5 +18,7 @@ namespace SistemaEstoque.Controllers
 
             return View(categorias);
         }
+
+        public IActionResult Create() => View();
     }
 }
