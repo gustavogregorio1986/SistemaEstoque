@@ -21,6 +21,8 @@ namespace SistemaEstoque.Models
 
         public Categoria Categoria { get; set; }
 
+        public string Codigo { get; set; }
+
         public int CategoriaId { get; set; }
 
         public ICollection<MovimentacoesEstoque> Movimentacoes { get; set; }
