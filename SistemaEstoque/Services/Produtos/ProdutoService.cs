@@ -13,14 +13,79 @@ namespace SistemaEstoque.Services.Produtos
             _context = context;
         }
 
-        public Task<ResponseModel<string>> AdicionarAsync(Produto produto)
+        public async Task<ResponseModel<string>> AdicionarAsync(Produto produto)
         {
-            throw new NotImplementedException();
-        }
+            ResponseModel<string> response = new ResponseModel<string>();
 
-        public Task<ResponseModel<string>> AtualizarAsync(Produto produto)
+            try
+            {
+
+                var produtoBanco = new Produto
+                {
+                    Nome = produto.Nome,
+                    Descricao = produto.Descricao,
+                    Preco = produto.Preco,
+                    Quantidade = produto.Quantidade,
+                    CategoriaId = produto.CategoriaId,
+                    Imagem = await ConverterImagem(produto.ImagemUpload),
+                };
+
+                _context.Produtos.Add(produtoBanco);
+                await _context.SaveChangesAsync();
+
+                response.Mensagem = "Produto adicionado com sucesso.";
+
+                return response;
+
+            }
+            catch(Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        
+
+        public async Task<ResponseModel<string>> AtualizarAsync(Produto produto)
         {
-            throw new NotImplementedException();
+            ResponseModel<string> response = new ResponseModel<string>();
+
+            try
+            {
+                var produtoBanco = await _context.Produtos.FindAsync(produto.Id);
+
+                if(produtoBanco == null)
+                {
+                    response.Mensagem = "Produto não encontrado.";
+                    response.Status = false;
+                    return response;
+                }
+
+                produtoBanco.Nome = produto.Nome;
+                produtoBanco.Descricao = produto.Descricao;
+                produtoBanco.Preco = produto.Preco;
+                produtoBanco.Quantidade = produto.Quantidade;
+                produtoBanco.CategoriaId = produto.CategoriaId;
+
+                if(produto.ImagemUpload != null)
+                {
+                    produtoBanco.Imagem = await ConverterImagem(produto.ImagemUpload);
+                }
+
+                _context.Produtos.Update(produtoBanco);
+                await _context.SaveChangesAsync();
+
+                response.Mensagem = "Produto atualizado com sucesso.";
+
+                return response;
+            }
+            catch(Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
         }
 
         public Task<Produto> ObterPorIdAsync(int id) => _context.Produtos.Include(p => p.Categoria).FirstOrDefaultAsync(p => p.Id == id);
@@ -30,6 +95,15 @@ namespace SistemaEstoque.Services.Produtos
         public Task<ResponseModel<string>> RemoverAsync(int id)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<byte[]> ConverterImagem(IFormFile imagem)
+        {
+            if (imagem == null) return null;
+
+            using var memoryStream = new MemoryStream();
+            await imagem.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
         }
     }
 }
