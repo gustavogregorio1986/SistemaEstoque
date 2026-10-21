@@ -92,9 +92,33 @@ namespace SistemaEstoque.Services.Produtos
 
         public async Task<List<Produto>> ObterTodosAsync() => await _context.Produtos.Include(p => p.Categoria).ToListAsync();
 
-        public Task<ResponseModel<string>> RemoverAsync(int id)
+        public async Task<ResponseModel<string>> RemoverAsync(int id)
         {
-            throw new NotImplementedException();
+            ResponseModel<string> response = new ResponseModel<string>();   
+
+            try
+            {
+                var produto = await _context.Produtos.FindAsync(id);
+
+                if (produto == null)
+                {
+                    response.Mensagem = "Produto não encontrado.";
+                    response.Status = false;
+                    return response;
+                }
+
+                _context.Produtos.Remove(produto);
+                await _context.SaveChangesAsync();
+
+                response.Mensagem = "Produto removido com sucesso.";
+                return response;
+            }
+            catch(Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
         }
 
         private async Task<byte[]> ConverterImagem(IFormFile imagem)
