@@ -31,10 +31,10 @@ namespace SistemaEstoque.Controllers
 
                 if (!response.Status)
                 {
-                    TempData["MensagmeErro"] = response.Mensgame;
+                    TempData["MensagmeErro"] = response.Mensagem;
                 }
 
-                TempData["MensagemSucesso"] = response.Mensgame;
+                TempData["MensagemSucesso"] = response.Mensagem;
 
                 return RedirectToAction("Index");
            }
@@ -51,6 +51,21 @@ namespace SistemaEstoque.Controllers
                 return RedirectToAction("Index");
             }
             return View(categoria);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var response = await _categoriaInterface.RemoverAsync(id);
+
+            if (!response.Status)
+            {
+                TempData["MensagemErro"] = response.Mensagem;
+                return RedirectToAction("Index", new { id = id }); // ou Index, dependendo de para onde o vídeo manda
+            }
+
+            TempData["MensagemSucesso"] = response.Mensagem; // Caso tenha mensagem de sucesso
+            return RedirectToAction("Index");
         }
     }
 }

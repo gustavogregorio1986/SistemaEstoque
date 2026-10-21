@@ -2,7 +2,7 @@
 {
     public class ResponseModel<T>
     {
-        public string Mensgame { get; set; }
+        public string Mensagem { get; set; }
 
         public bool Status { get; set; } = true;
 

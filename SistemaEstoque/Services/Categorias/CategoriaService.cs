@@ -28,13 +28,13 @@ namespace SistemaEstoque.Services.Categorias
                 _context.Add(categoriaBanco);
                 await _context.SaveChangesAsync();
 
-                response.Mensgame = "Categoria adicionada com sucesso!";
+                response.Mensagem = "Categoria adicionada com sucesso!";
 
                 return response;
             }
             catch(Exception ex)
             {
-                response.Mensgame = ex.Message;
+                response.Mensagem = ex.Message;
                 response.Status = false;
                 return response;
             }
@@ -48,6 +48,30 @@ namespace SistemaEstoque.Services.Categorias
         public async Task<List<Categoria>> ObterTodosAsync()
         {
             return await _context.Categorias.ToListAsync();
+        }
+
+        public async Task<ResponseModel<string>> RemoverAsync(int id)
+        {
+            ResponseModel<string> response = new ResponseModel<string>();
+
+            try
+            {
+                var categoria = await _context.Categorias.FindAsync(id);
+
+
+                _context.Categorias.Remove(categoria);
+                await _context.SaveChangesAsync();
+
+                response.Mensagem = "Categoria removida com sucesso!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
         }
     }
 }

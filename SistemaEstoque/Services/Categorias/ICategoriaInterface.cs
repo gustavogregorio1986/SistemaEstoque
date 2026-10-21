@@ -10,5 +10,7 @@ namespace SistemaEstoque.Services.Categorias
         Task<ResponseModel<string>> AdicionarAsync(CategoriaDto categoriaDto);
 
         Task<Categoria> ObterPorIdAsync(int id);
+
+        Task<ResponseModel<string>> RemoverAsync(int id);
     }
 }
