@@ -41,5 +41,16 @@ namespace SistemaEstoque.Controllers
 
            return View(categoriaDto);
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var categoria = await _categoriaInterface.ObterPorIdAsync(id);
+            if (categoria == null)
+            {
+                TempData["MensagemErro"] = "Categoria não encontrada!";
+                return RedirectToAction("Index");
+            }
+            return View(categoria);
+        }
     }
 }

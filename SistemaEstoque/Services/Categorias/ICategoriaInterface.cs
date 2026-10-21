@@ -8,5 +8,7 @@ namespace SistemaEstoque.Services.Categorias
         Task<List<Categoria>> ObterTodosAsync(); 
 
         Task<ResponseModel<string>> AdicionarAsync(CategoriaDto categoriaDto);
+
+        Task<Categoria> ObterPorIdAsync(int id);
     }
 }

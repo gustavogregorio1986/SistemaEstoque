@@ -40,6 +40,11 @@ namespace SistemaEstoque.Services.Categorias
             }
         }
 
+        public async Task<Categoria> ObterPorIdAsync(int id)
+        {
+            return await _context.Categorias.FindAsync(id);
+        }
+
         public async Task<List<Categoria>> ObterTodosAsync()
         {
             return await _context.Categorias.ToListAsync();
