@@ -4,7 +4,7 @@
     {
         public string Mensgame { get; set; }
 
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
 
         public T? Dados { get; set; }
     }

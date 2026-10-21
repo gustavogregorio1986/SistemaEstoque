@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SistemaEstoque.DTO;
 using SistemaEstoque.Services.Categorias;
 
 namespace SistemaEstoque.Controllers
@@ -20,5 +21,25 @@ namespace SistemaEstoque.Controllers
         }
 
         public IActionResult Create() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CategoriaDto categoriaDto)
+        {
+           if(ModelState.IsValid)
+           {
+                var response = await _categoriaInterface.AdicionarAsync(categoriaDto);
+
+                if (!response.Status)
+                {
+                    TempData["MensagmeErro"] = response.Mensgame;
+                }
+
+                TempData["MensagemSucesso"] = response.Mensgame;
+
+                return RedirectToAction("Index");
+           }
+
+           return View(categoriaDto);
+        }
     }
 }
